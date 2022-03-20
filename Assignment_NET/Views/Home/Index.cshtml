@@ -1,0 +1,91 @@
+﻿@model PagedList.IPagedList<Assignment_NET.Models.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Home Page";
+    //Layout = "~/Views/Shared/_LayouHome.cshtml";
+
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $("input[name=SearchString]").keyup(function (e) {
+                $("#btnsubmit").click();
+            })
+        })
+    </script>
+}
+<script type="text/javascript">
+    function AddToCart(item) {
+        var itemId = $(item).attr("itemid");
+        var formData = new FormData();
+        formData.append("Id", itemId);
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            url: '/Home/Index',
+            success: function (data) {
+
+                if (data.Success) {
+                    //alert(data.Counter);
+                    $("#cartItem").text("Cart(" + data.Counter + ")");
+
+                }
+            },
+            error: function () {
+                alert("There is some problem");
+            }
+        })
+    }
+</script>
+
+
+<head>
+    <style>
+        .card {
+            width: 250px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            margin-bottom: 15px;
+            padding: 10px;
+            text-align: center;
+        }
+
+            .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
+            }
+    </style>
+</head>
+
+<div class="container-fluid">
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-lg-3 col-sm-6">
+                <div class="card">
+                    @Html.DisplayFor(model => item.productName)
+                    <img src="@Url.Content(item.Images)" style="height:200px; width: 200px; margin: 10px" />
+
+                    Price: <b>@item.productPrice.ToString("#,### VNĐ")</b>
+                    <div>
+                        <input type="button" name="AddToCart" value="Add to Cart" class="btn btn-primary"
+                               id="btnAddToCart" onclick="AddToCart(this)" itemid="@item.Id" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+</div>

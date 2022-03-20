@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Assignment_NET.Models.ShoppingCartModel>
+@{
+    ViewBag.Title = "ShoppingCart";
+    double TotalAmount = 0.0;
+}
+
+<h2>Shopping Cart</h2>
+
+
+<table class="table-condensed" style="width:100%">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Images)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        TotalAmount += item.Total;
+<tr>
+    <td>
+        <img src="@Url.Content(item.Images)" height="30px" width="30px" class="img-rounded" />
+    </td>
+    <td>
+        @item.ItemName
+    </td>
+    <td>
+        <form action="@Url.Action("Edit")" method="get">
+            <input type="hidden" name="Id" value="@item.Id" />
+            <input type="number" min="1" step="1" name="Quantity" value="@item.Quantity" />
+            <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>
+        </form>
+    </td>
+    <td>
+        @item.UnitPrice.ToString("#,##")
+    </td>
+    <td>
+        @item.Total.ToString("#,##")
+    </td>
+    <td> <a href="@Url.Action("XoaKhoiGio",new { Id = item.Id})" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn btn-danger btn-sm">Xóa</a> </td>
+</tr>
+    }
+    <tr style="border-top: 1px solid #808080">
+        <td colspan="4" style="text-align: right">
+            <h3>Total Amount</h3>
+        </td>
+        <td>
+            <h3>@TotalAmount.ToString("#,##")</h3>
+        </td>
+    </tr>
+    <tr style="text-align: right">
+        <td colspan="5">
+            <input type="button" value="Save" name="Save" class="btn btn-primary" id="SaveOrder" />
+        </td>
+    </tr>
+    <tr style="text-align: right">
+        <td colspan="5">
+            @Html.ActionLink("Back To Shopping", "Index", "Home")
+        </td>
+    </tr>
+</table>
+
+
