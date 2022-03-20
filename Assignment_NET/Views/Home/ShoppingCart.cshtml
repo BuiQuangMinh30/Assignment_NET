@@ -39,7 +39,9 @@
     <td>
         <form action="@Url.Action("Edit")" method="get">
             <input type="hidden" name="Id" value="@item.Id" />
-            <input type="number" min="1" step="1" name="Quantity" value="@item.Quantity" />
+            <span><button type="button" id="sub_quantity">-</button></span>
+            <input type="number" min="1" step="1" name="Quantity" id="Quantity" value="@item.Quantity" />
+            <span><button type="button" id="add_quantity">+</button></span>
             <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>
         </form>
     </td>
@@ -73,3 +75,32 @@
 </table>
 
 
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            //$("input[name=searchString]").on("keyup change", function (e) {
+            //    $("#btnSubmit").click();
+            //})
+            $("#add_quantity").on("click", function (e) {
+                var soluong = $("#Quantity").val();
+                soluong++;
+                if (soluong >= 50 ) {
+                    alert("số lượng không được quá 50");
+                } else {
+                    $("#Quantity").val(soluong);
+                }
+            })
+            $("#sub_quantity").on("click", function (e) {
+                var soluong = $("#Quantity").val();
+                soluong--;
+                if (soluong <= 0) {
+                    alert("số lượng không được nhỏ hơn 0");
+                } else {
+                    $("#Quantity").val(soluong);
+                }
+            })
+        })
+    </script>
+}

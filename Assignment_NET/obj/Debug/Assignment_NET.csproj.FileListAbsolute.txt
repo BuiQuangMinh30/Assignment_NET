@@ -93,3 +93,4 @@ D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.dll
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.Mvc.dll
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.xml
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.Mvc.xml
+D:\CSharp\FPT\Assignment_NET\Assignment_NET\obj\Debug\Assignment_NET.csproj.AssemblyReference.cache
