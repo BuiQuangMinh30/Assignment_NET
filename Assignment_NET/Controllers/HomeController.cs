@@ -25,7 +25,7 @@ namespace Assignment_NET.Controllers
         [HttpPost]
         public JsonResult Index(int Id)
         {
-
+            ViewBag.ListCategory = db.Categories.ToList();
             ShoppingCartModel objShoppingCartModal = new ShoppingCartModel();
             var objItem = db.Products.Where(s => s.Id == Id).FirstOrDefault();
             if (Session["CartCounter"] != null)
@@ -54,6 +54,7 @@ namespace Assignment_NET.Controllers
         }
         public ActionResult ShoppingCart()
         {
+            ViewBag.ListCategory = db.Categories.ToList();
             ShoppingCartModel objShoppingCartModal = new ShoppingCartModel();
             listShoppingCarts = Session["CartItem"] as List<ShoppingCartModel>;
             objShoppingCartModal.Total = objShoppingCartModal.Quantity * objShoppingCartModal.UnitPrice;
@@ -92,7 +93,11 @@ namespace Assignment_NET.Controllers
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.ListCategory = db.Categories.ToList();
+
             var products = db.Products.AsQueryable(); //đặt truy vấn khác nhau
+            
+           
             if (searchString != null)
             {
                 page = 1;
@@ -109,6 +114,11 @@ namespace Assignment_NET.Controllers
                 products = products.Where(s => s.productName.Contains(searchString.Trim()));
 
             }
+            //else
+            //{
+            //    products = db.Products.Include(p => p.category);
+
+            //}
 
             switch (sortOrder)
             {
@@ -119,7 +129,7 @@ namespace Assignment_NET.Controllers
                     products = products.OrderBy(s => s.productName);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 6;
             int pageNumber = (page ?? 1);
             return View(products.ToPagedList(pageNumber, pageSize));
         }
@@ -127,6 +137,15 @@ namespace Assignment_NET.Controllers
         {
 
             var products = db.Products.AsQueryable(); //đặt truy vấn khác nhau
+            if (Request.QueryString["categoryId"] != null)
+            {
+                int categoryId = int.Parse(this.Request.QueryString["categoryId"]);
+                if (categoryId != -1) // tìm theo categoryName
+                {
+                    products = products.Where(s => s.categoryId == categoryId);
+                }
+
+            }
             if (searchString != null)
             {
                 page = 1;
@@ -138,29 +157,22 @@ namespace Assignment_NET.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(s => s.productName.Contains(searchString.Trim()));
-
             }
-            return PartialView("IndexAjax", products.ToList());
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    products = products.OrderByDescending(s => s.productName);
+                    break;
+                default:
+                    products = products.OrderBy(s => s.productName);
+                    break;
+            }
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+            return PartialView("IndexAjax", products.ToPagedList(pageNumber, pageSize));
         }
 
         public RedirectToRouteResult Edit(int Id, int Quantity)
-        //{
-        //    ShoppingCartModel objShoppingCartModal = new ShoppingCartModel();
-        //    var objItem = db.Products.Where(s => s.Id == Id).FirstOrDefault();
-        //    if (Session["CartCounter"] != null)
-        //    {
-        //        listShoppingCarts = Session["CartItem"] as List<ShoppingCartModel>;
-        //    }
-        //    if (listShoppingCarts.Any(model => model.Id == Id))
-        //    {
-        //        objShoppingCartModal = listShoppingCarts.Single(model => model.Id == Id);
-        //        objShoppingCartModal.Quantity += Quantity;
-        //        objShoppingCartModal.Total = objShoppingCartModal.Quantity * objShoppingCartModal.UnitPrice;
-        //    }
-        //    List<ShoppingCartModel> giohang = Session["CartItem"] as List<ShoppingCartModel>;
-        //    ShoppingCartModel itemSua = giohang.FirstOrDefault(m => m.Id == Id);
-
-        //    return RedirectToAction("ShoppingCart");
         {
             List<ShoppingCartModel> giohang = Session["CartItem"] as List<ShoppingCartModel>;
             ShoppingCartModel itemSua = giohang.FirstOrDefault(m => m.Id == Id);

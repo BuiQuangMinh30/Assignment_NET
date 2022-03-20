@@ -15,6 +15,11 @@
                 $("#btnsubmit").click();
             })
         })
+        document.addEventListener('DOMContentLoaded', function () {
+            $("#categoryId").on("change", function (e) {
+                $("#findCategory").click();
+            })
+        })
     </script>
 }
 <script type="text/javascript">
@@ -70,6 +75,7 @@
             <div class="col-md-4 col-lg-3 col-sm-6">
                 <div class="card">
                     @Html.DisplayFor(model => item.productName)
+                    @Html.DisplayFor(model => item.categoryId)
                     <img src="@Url.Content(item.Images)" style="height:200px; width: 200px; margin: 10px" />
 
                     Price: <b>@item.productPrice.ToString("#,### VNĐ")</b>

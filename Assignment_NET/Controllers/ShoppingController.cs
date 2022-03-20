@@ -18,6 +18,7 @@ namespace Assignment_NET.Controllers
         // GET: Shopping
         public ActionResult Index()
         {
+            ViewBag.ListCategory = db.Categories.ToList();
             return View(db.Products.ToList());
         }
 

@@ -23,10 +23,30 @@
                     </div>
                     <ul class="nav navbar-nav">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">About123</a></li>
+                        <li><a href="#">About</a></li>
                         <li><a href="#">Contact</a></li>
 
                     </ul>
+                    @using (Ajax.BeginForm("IndexAjax", "Home",new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "Get",
+                    OnFailure = "failedId",
+                    LoadingElementId = "loadingId",
+                    UpdateTargetId = "resultId",
+                }))
+                    {
+                        <div class="nav navbar-nav" style="margin-top: 10px">
+                            <select name="categoryId" id="categoryId">
+                                <option value=-1>Chọn danh mục</option>
+                                @foreach (var category in ViewBag.ListCategory)
+                                {
+                                    <option value=@category.Id>@category.categoryName</option>
+                                }
+                            </select>
+                            <input type="submit" value="Search" id="findCategory" style="display:none" />
+                        </div>
+                    }
                     @using (Ajax.BeginForm("IndexAjax", "Home", new AjaxOptions()
                     {
                         HttpMethod = "GET",
@@ -39,18 +59,18 @@
                     {
                         <div class="nav navbar-nav" style="margin-top: 10px">
                             <p>
-                            @*@Html.TextBox("SearchString")*@
-                            <input type="text" name="SearchString" id="SearchString"/>
-                            <input type="submit" value="Search" id="btnsubmit" />
+                                @*@Html.TextBox("SearchString")*@
+                                <input type="text" name="SearchString" id="SearchString" />
+                                <input type="submit" value="Search" id="btnsubmit" />
                             </p>
                         </div>
                     }
 
                     <ul>
                     </ul>
-                   
-                        @Html.Partial("_ShoppingCart")
-                    
+
+                    @Html.Partial("_ShoppingCart")
+
                 </div>
 
 

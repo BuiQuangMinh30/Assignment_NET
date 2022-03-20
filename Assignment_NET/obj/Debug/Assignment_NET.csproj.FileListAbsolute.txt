@@ -89,7 +89,6 @@ D:\CSharp\FPT\Assignment_NET\Assignment_NET\obj\Debug\Assignment_NET.Migrations.
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\obj\Debug\Assignment_NET.Migrations.updateOrder.resources
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\obj\Debug\Assignment_NET.Migrations.updateOrderDetail.resources
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\obj\Debug\Assignment_NET.Migrations.updateDb.resources
-D:\CSharp\FPT\Assignment_NET\Assignment_NET\obj\Debug\Assignment_NET.csproj.AssemblyReference.cache
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.dll
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.Mvc.dll
 D:\CSharp\FPT\Assignment_NET\Assignment_NET\bin\PagedList.xml
